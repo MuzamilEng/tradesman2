@@ -27,40 +27,45 @@ connectDB();
 
 
 // Middleware
-app.use(cors());
-app.use('/api/v1/payment',stripeRoute)
+app.use(cors({ origin: '*' }));
 app.use(express.json());
+
+
 app.use(express.static('public'));
 app.use(express.json({limit: "50mb",  extended: true}));
 app.use(express.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 
 // Routes
-
-app.get('/', (req, res) => {
-  console.log('hello bot');
-  res.json({req})
-});
-
 app.get('/api/v1/messages', async (req, res) => {
- try {
-  const messages = await Message.find();
-  res.status(200).json(messages);
-  console.log(messages, 'messages');
- } catch (error) {
-  console.log(error, 'error fetching messages' );
- }
-})
+  try {
+   const messages = await Message.find();
+   res.status(200).json(messages);
+   console.log(messages, 'messages');
+  } catch (error) {
+   console.log(error, 'error fetching messages' );
+  }
+ })
+ 
+ app.use('/api/v1/auth', auth);
+ app.use('/api/v1/tradesman', tradesmanRoute);
+ app.use('/api/v1/chat', chatRoute);
+ app.use('/api/v1/payment',stripeRoute)
+ app.use('/api/v1/message', messageRoute);
+ app.use('/api/v1/profile', profileRoute);
+ app.use('/api/v1/booking', bookingRoute);
+ app.use('/api/v1/payment', paymentRoute);
+ app.use('/api/v1/review', reviewRoute);
+ app.use(errorHandler)
+ app.use(notFound)
 
-app.use('/api/v1/auth', auth);
-app.use('/api/v1/tradesman', tradesmanRoute);
-app.use('/api/v1/chat', chatRoute);
-app.use('/api/v1/message', messageRoute);
-app.use('/api/v1/profile', profileRoute);
-app.use('/api/v1/booking', bookingRoute);
-app.use('/api/v1/payment', paymentRoute);
-app.use('/api/v1/review', reviewRoute);
-app.use(errorHandler)
-app.use(notFound)
+ app.use(express.static(path.resolve(__dirname, '../client/build')));
+ 
+ // Serve React app for all other routes
+ app.get('*', (req, res) => {
+   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+ });
+
+ 
 // socket.io --------configuration
 const server = app.listen(
   port,
