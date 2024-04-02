@@ -22,16 +22,16 @@ const [isLogedUser,setLogedUser] = useState()
   const [query,setQuery] = useState({});
   const navigate = useNavigate();
 
-  // const userLoginInfo = JSON.parse(localStorage.getItem("token"))
-  // useEffect(() => {
-  //   if(userLoginInfo && userLoginInfo?.user !== undefined) {
-  //     setLogedUser(userLoginInfo)
-  //   }
-  //   setUser(userLoginInfo?.user);
+  const userLoginInfo = localStorage.getItem("token") || JSON.parse(localStorage.getItem("token"))
+  useEffect(() => {
+    if(userLoginInfo && userLoginInfo?.user !== undefined) {
+      setLogedUser(userLoginInfo)
+    }
+    setUser(userLoginInfo?.user);
     
-  //   // if (!userInfos) navigate("/login");
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [navigate]);
+    // if (!userInfos) navigate("/login");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate]);
   
 
   useEffect(()=> {
