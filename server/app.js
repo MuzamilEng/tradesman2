@@ -18,6 +18,7 @@ const reviewRoute = require("./routes/reviews")
 const http = require('http');
 // const server = http.createServer(app);
 const Message = require('./models/Message');
+const path = require('path');
 
 
 const port = process.env.PORT || 5000;
@@ -61,11 +62,11 @@ app.get('/api/v1/messages', async (req, res) => {
  app.use(express.static(path.resolve(__dirname, '../client/build')));
  
  // Serve React app for all other routes
- app.get('*', (req, res) => {
-   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
- });
+//  app.get('*', (req, res) => {
+//    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+//  });
 
- 
+
 // socket.io --------configuration
 const server = app.listen(
   port,
