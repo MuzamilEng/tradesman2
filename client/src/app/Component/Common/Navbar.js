@@ -12,13 +12,8 @@ const Navbar = () => {
     setLogedUser(false);
     nevigate("/login");
   }
-  // console.log("helooooooo", isLogedUser);
   const loggedUserId = isLogedUser?.tradesmanProfile?._id;
-  function handleLogingState() {
-    if (!isLogedUser) {
-      toast.error("please Login to access it");
-    }
-  }
+ 
   return (
     <>
       <nav className="flex items-center justify-between gap-2 p-[1vw] bg-[#e8f3df] opacity-80 sticky top-0 z-50">
@@ -30,18 +25,12 @@ const Navbar = () => {
             {navData?.map((item, index) => {
               return (
                 <div className="ml-[2vw]" key={index}>
-                  <p
-                    key={index}
-                    className="cursor-pointer "
-                    onClick={handleLogingState}
-                  >
                     <Link
                       className="text-vw font-medium hover:text-gray-700"
                       to={isLogedUser ? item.url : "/login"}
                     >
                       {item.title}
                     </Link>
-                  </p>
                 </div>
               );
             })}
