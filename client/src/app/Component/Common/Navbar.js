@@ -25,12 +25,7 @@ const Navbar = () => {
             {navData?.map((item, index) => {
               return (
                 <div className="ml-[2vw]" key={index}>
-                    <Link
-                      className="text-vw font-medium hover:text-gray-700"
-                      to={isLogedUser ? item.url : "/login"}
-                    >
-                      {item.title}
-                    </Link>
+                    <Link className="text-vw font-medium hover:text-gray-700" to={item.url}> {item.title} </Link>
                 </div>
               );
             })}
