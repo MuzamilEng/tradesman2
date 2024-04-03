@@ -8,13 +8,16 @@ import { useGlobalContext } from "../../UserContext/UserContext";
 
 const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
-  const loginTokken  = JSON.parse(localStorage.getItem('token'));
-  const userToken = loginTokken?.token
-  // console.log(userToken, 'tokken1234567890');
+  const loginTokken = JSON.parse(localStorage.getItem("token"));
+  // console.log("chat token", loginTokken.token);
+  const userToken = loginTokken?.token;
+
+  console.log(userToken, "chat token 1");
   // console.log(loginTokken, 'tokken');
 
-  const { selectedChat, setSelectedChat, user, chats, setChats, isLogedUser } = useGlobalContext();
-  const loggedUserId = isLogedUser?.user?._id
+  const { selectedChat, setSelectedChat, user, chats, setChats, isLogedUser } =
+    useGlobalContext();
+  const loggedUserId = isLogedUser?.user?._id;
 
   const toast = useToast();
 
@@ -27,9 +30,12 @@ const MyChats = ({ fetchAgain }) => {
         },
       };
 
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/chat`, config);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_URL}/chat`,
+        config
+      );
       setChats(data);
-      console.log(data, 'chat created');
+      console.log(data, "chat created");
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -43,11 +49,11 @@ const MyChats = ({ fetchAgain }) => {
   };
 
   useEffect(() => {
-    setLoggedUser(JSON.parse(localStorage.getItem("userLoginInfo")));
+    setLoggedUser(localStorage.getItem("userLoginInfo"));
     fetchChats();
     // eslint-disable-next-line
   }, [fetchAgain]);
-  
+
   return (
     <Box
       display={{ base: selectedChat ? "none" : "flex", md: "flex" }}

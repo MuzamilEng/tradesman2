@@ -1,8 +1,15 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { Box, Text } from "@chakra-ui/layout";
+import { useEffect } from "react";
+import { useGlobalContext } from "../../UserContext/UserContext";
 
-const UserListItem = ({user, handleFunction }) => {
+const UserListItem = ({ user, handleFunction }) => {
+  // useEffect(() => {
+  //   const userl = JSON.parse(localStorage.getItem("token"));
+  //   console.log("my user", userl);
+  // }, []);
   // const { user } = useGlobalContext();
+  // console.log("user myyyy", user);
 
   return (
     <Box

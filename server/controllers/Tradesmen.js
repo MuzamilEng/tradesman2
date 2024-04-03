@@ -1,27 +1,42 @@
-const TrademanSchema = require('../models/Tradesmen');
-const cloudinary = require('../cloudinary.config');
-const User = require('../models/User');
+const TrademanSchema = require("../models/Tradesmen");
+const cloudinary = require("../cloudinary.config");
+const User = require("../models/User");
 
 const createTrademanProfile = async (req, res) => {
   try {
-    const { tradeType, location, phoneNumber, description, hourlyRate, lat, lng} = req.body;
-    const userId = req?.body?.userId
-      const user = await User.findById(userId);
-      console.log(user, 'user', userId);
-    console.log(req.body, 'req.body');
-    const parsedLat = Number(lat);
-    const parsedLng = Number(lng);
+    const {
+      tradeType,
+      location,
+      phoneNumber,
+      description,
+      hourlyRate,
+      lat,
+      lng,
+    } = req.body;
+    console.log(req.body);
+
+    const userId = req?.body?.userId;
+    const user = await User.findById(userId);
+    console.log(user, "user", userId);
+    console.log(req.body, "req.body");
+    const parsedLat = Number(lat?.[1]);
+    const parsedLng = Number(lng?.[1]);
+    console.log(parsedLat);
+    console.log(parsedLng);
     let mainImageURL;
 
     // Handle main image update
     if (req.files && req.files.image) {
       const mainImage = req.files.image[0];
       const mainImageResult = await cloudinary.uploader.upload(mainImage.path, {
-        folder: 'Assets',
+        folder: "Assets",
       });
 
       if (mainImageResult.error) {
-        console.error('Cloudinary upload error for main image:', mainImageResult.error);
+        console.error(
+          "Cloudinary upload error for main image:",
+          mainImageResult.error
+        );
         // Handle the error appropriately
       }
 
@@ -38,7 +53,7 @@ const createTrademanProfile = async (req, res) => {
       if (req.files && req.files[gigImageField]) {
         const gigImage = req.files[gigImageField][0];
         const gigImageResult = await cloudinary.uploader.upload(gigImage.path, {
-          folder: 'Assets',
+          folder: "Assets",
         });
         gigImages.push(gigImageResult.secure_url);
       }
@@ -51,8 +66,9 @@ const createTrademanProfile = async (req, res) => {
       phoneNumber,
       description,
       hourlyRate,
-      lat:parsedLat, lng:parsedLng,
-     image:mainImageURL,
+      lat: parsedLat,
+      lng: parsedLng,
+      image: mainImageURL,
       gigImage1: gigImages[0],
       gigImage2: gigImages[1],
       gigImage3: gigImages[2],
@@ -68,21 +84,21 @@ const createTrademanProfile = async (req, res) => {
       responseObj.image = mainImageURL;
     }
 
-   
-
     res.status(201).json(responseObj);
   } catch (error) {
-    console.error('Error saving profile:', error);
+    console.error("Error saving profile:", error);
     res.status(500).json({ message: error.message });
   }
 };
 // Get a single trademan by ID
 const getTrademanProfileById = async (req, res) => {
   try {
-    const profile = await TrademanSchema.findById(req.params.id).populate('user').exec();
+    const profile = await TrademanSchema.findById(req.params.id)
+      .populate("user")
+      .exec();
     console.log(profile, "Trademan profile");
     if (!profile) {
-      return res.status(404).json({ error: 'profile not found' });
+      return res.status(404).json({ error: "profile not found" });
     }
     res.status(200).json(profile);
   } catch (error) {
@@ -99,10 +115,23 @@ const updateTrademanProfile = async (req, res) => {
     const existingContent = await TrademanSchema.findById(id);
 
     if (!existingContent) {
-      return res.status(404).json({ message: 'Content not found' });
+      return res.status(404).json({ message: "Content not found" });
     }
 
-    const { occupation, username, email, ratings, hourlyRate, description, location, lat, lng, phoneNumber, gigTitle, gigDescription } = req.body;
+    const {
+      occupation,
+      username,
+      email,
+      ratings,
+      hourlyRate,
+      description,
+      location,
+      lat,
+      lng,
+      phoneNumber,
+      gigTitle,
+      gigDescription,
+    } = req.body;
     const parsedLat = Number(lat?.[1]);
     const parsedLng = Number(lng?.[1]);
 
@@ -112,7 +141,7 @@ const updateTrademanProfile = async (req, res) => {
     if (req.file) {
       const mainImage = req.file;
       const mainImageResult = await cloudinary.uploader.upload(mainImage.path, {
-        folder: 'Assets',
+        folder: "Assets",
       });
       mainImageURL = mainImageResult.secure_url;
     }
@@ -123,7 +152,7 @@ const updateTrademanProfile = async (req, res) => {
       console.log(req.files, "enfijsidjds");
       const gigImage1 = req.files.gigImage1[0];
       const gigImage1Result = await cloudinary.uploader.upload(gigImage1.path, {
-        folder: 'Assets',
+        folder: "Assets",
       });
       gigImage1URL = gigImage1Result.secure_url;
     }
@@ -133,7 +162,7 @@ const updateTrademanProfile = async (req, res) => {
     if (req.files && req.files.gigImage2) {
       const gigImage2 = req.files.gigImage2[0];
       const gigImage2Result = await cloudinary.uploader.upload(gigImage2.path, {
-        folder: 'Assets',
+        folder: "Assets",
       });
       gigImage2URL = gigImage2Result.secure_url;
     }
@@ -143,7 +172,7 @@ const updateTrademanProfile = async (req, res) => {
     if (req.files && req.files.gigImage3) {
       const gigImage3 = req.files.gigImage3[0];
       const gigImage3Result = await cloudinary.uploader.upload(gigImage3.path, {
-        folder: 'Assets',
+        folder: "Assets",
       });
       gigImage3URL = gigImage3Result.secure_url;
     }
@@ -154,8 +183,8 @@ const updateTrademanProfile = async (req, res) => {
       console.log(req.files.video[0], "video file");
       const video = req.files.video[0];
       const videoResult = await cloudinary.uploader.upload(video.path, {
-        folder: 'Assets',
-        resource_type: 'video', // Ensure proper resource type for video uploads
+        folder: "Assets",
+        resource_type: "video", // Ensure proper resource type for video uploads
       });
       videoURL = videoResult.secure_url;
     }
@@ -187,13 +216,13 @@ const updateTrademanProfile = async (req, res) => {
     );
 
     if (!updatedContent) {
-      return res.status(500).json({ message: 'Failed to update content' });
+      return res.status(500).json({ message: "Failed to update content" });
     }
 
     res.status(200).json(updatedContent);
   } catch (error) {
-    console.error('Error updating profile:', error);
-    res.status(500).json({ message: 'Error updating profile' });
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Error updating profile" });
   }
 };
 
@@ -201,7 +230,7 @@ const updateTrademanProfile = async (req, res) => {
 const getAllTradesmenProfiles = async (req, res) => {
   try {
     const profiles = await TrademanSchema.find().populate("user");
-    
+
     res.status(200).json(profiles);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -209,12 +238,12 @@ const getAllTradesmenProfiles = async (req, res) => {
 };
 
 const getTrademanProfileByEmail = async (req, res) => {
-  const {email} = req.query;
-  console.log(req.query, 'req.query');
+  const { email } = req.query;
+  console.log(req.query, "req.query");
   try {
-    const profile = await TrademanSchema.findOne({email: email});
+    const profile = await TrademanSchema.findOne({ email: email });
     if (!profile) {
-      return res.status(404).json({ error: 'profile not found' });
+      return res.status(404).json({ error: "profile not found" });
     }
     res.status(200).json(profile);
   } catch (error) {
@@ -226,7 +255,7 @@ const deleteTrademanProfile = async (req, res) => {
   try {
     const profile = await TrademanSchema.findByIdAndRemove(req.params.id);
     if (!profile) {
-      return res.status(404).json({ error: 'profile not found' });
+      return res.status(404).json({ error: "profile not found" });
     }
     res.status(200).json(profile);
     // console.log("Successfully deleted");
@@ -236,58 +265,63 @@ const deleteTrademanProfile = async (req, res) => {
 };
 
 const allTradesMen = async (req, res) => {
-  console.log(req.query, 'query');
-  const keyword = req.query.search ? 
-  {
-    $or : [
-      { username: {$regex : req.query.search, $options: "i"}},
-      { email: {$regex : req.query.search, $options: "i"}},
-    ]
-  } : {};
+  console.log(req.query, "query");
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { username: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
 
   try {
-    const profiles = await TrademanSchema.find(keyword).find({ _id: { $ne: req.user._id } });
+    const profiles = await TrademanSchema.find(keyword).find({
+      _id: { $ne: req.user._id },
+    });
     res.status(200).json(profiles);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-
-const searchTrademan = async(req,res)=>{
+const searchTrademan = async (req, res) => {
   console.log(req.query, "Search here ");
-  try{
+  try {
     const query = req.query;
     // console.log(query,"search")
     const searchQuery = {};
     // console.log(searchQuery, "searchQuery");
 
-    // search by name 
+    // search by name
     if (query.location) {
-      searchQuery.location = { $regex: new RegExp(query.location, 'i') };
+      searchQuery.location = { $regex: new RegExp(query.location, "i") };
       console.log(searchQuery);
     }
-    // search by gategory 
+    // search by gategory
     if (query.tradeType) {
-      searchQuery.tradeType = { $regex: new RegExp(query.tradeType, 'i') };
+      searchQuery.tradeType = { $regex: new RegExp(query.tradeType, "i") };
       console.log(searchQuery);
     }
     // search by price o
     if (query.minhourlyRate && query.maxhourlyRate) {
-     searchQuery.hourlyRate = { $lte: parseFloat(query.maxhourlyRate), $gte: parseFloat(query.minhourlyRate) };
-     console.log(searchQuery);
+      searchQuery.hourlyRate = {
+        $lte: parseFloat(query.maxhourlyRate),
+        $gte: parseFloat(query.minhourlyRate),
+      };
+      console.log(searchQuery);
     }
-    const results = await TrademanSchema.find(searchQuery).populate('user');
+    const results = await TrademanSchema.find(searchQuery).populate("user");
     res.status(200).json({
-      success:true,
-      data: results
+      success: true,
+      data: results,
     });
-  }catch(err){
+  } catch (err) {
     res.status(500).json({
-      error: 'Internal server error',
-    })
+      error: "Internal server error",
+    });
   }
-}
+};
 module.exports = {
   createTrademanProfile,
   updateTrademanProfile,
@@ -296,5 +330,5 @@ module.exports = {
   deleteTrademanProfile,
   getTrademanProfileByEmail,
   allTradesMen,
-  searchTrademan
+  searchTrademan,
 };

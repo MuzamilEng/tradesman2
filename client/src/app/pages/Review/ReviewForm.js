@@ -4,8 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGlobalContext } from "../../UserContext/UserContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import addNotification from 'react-push-notification';
-
+import addNotification from "react-push-notification";
 
 const ReviewForm = () => {
   const { id } = useParams();
@@ -55,7 +54,6 @@ const ReviewForm = () => {
     }));
   };
 
-
   const handleNameChange = (event) => {
     setName(event.target.value);
     setErrors((prevErrors) => ({
@@ -104,7 +102,7 @@ const ReviewForm = () => {
       newErrors.overallRating = "Overall Rating is required";
       isValid = false;
     }
-  
+
     setErrors(newErrors);
 
     return isValid;
@@ -122,27 +120,28 @@ const ReviewForm = () => {
       formData.append("textReview", textReview);
       formData.append("postAnonymous", postAnonymous);
 
-    images.forEach((image, index) => {
-      formData.append("images", image);
-    });
-    for (const entry of formData.entries()) {
-      console.log(entry[0], entry[1]);
-    }
-    try {
-      // const token = JSON.parse(localStorage.getItem("token"));
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/review/add-review/${id}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
-      if (response.ok) {
-        console.log("Review submitted successfully");
-
+      images.forEach((image, index) => {
+        formData.append("images", image);
+      });
+      for (const entry of formData.entries()) {
+        console.log(entry[0], entry[1]);
+      }
+      try {
+        const token = JSON.parse(localStorage.getItem("token"));
+        console.log("hello", token.token);
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/review/add-review/${id}`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token.token}`,
+            },
+            body: formData,
+          }
+        );
+        if (response.ok) {
+          console.log("Review submitted successfully");
+          alert("Review submitted successfully");
           setOverallRating(0);
           setFeatureRatings({
             valueForMoney: 0,
@@ -155,20 +154,18 @@ const ReviewForm = () => {
           setName("");
           setPostAnonymous(false);
 
-          showToast("Review submitted successfully",'success');
-        //   addNotification({
-        //     title: 'Success',
-        //     subtitle: 'This is a subtitle',
-        //     message: 'This is a very long message',
-        //     native: true,
-        //     duration: 5000
-        // });
-          
-    
+          showToast("Review submitted successfully", "success");
+          //   addNotification({
+          //     title: 'Success',
+          //     subtitle: 'This is a subtitle',
+          //     message: 'This is a very long message',
+          //     native: true,
+          //     duration: 5000
+          // });
+
           setTimeout(() => {
             navigate(`/profile/${id}`);
           }, 2000);
-
 
           // navigate(`/profile/${id}`);
         } else {
@@ -307,9 +304,7 @@ const ReviewForm = () => {
                         ? "text-yellow-500"
                         : "text-gray-300"
                     } ${
-                      errors.overallRating
-                        ? "text-red-300"
-                        : "text-gray-300"
+                      errors.overallRating ? "text-red-300" : "text-gray-300"
                     }`}
                     onClick={() => handleOverallRatingChange(value)}
                   />
