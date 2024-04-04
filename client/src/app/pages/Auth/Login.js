@@ -62,6 +62,9 @@ const Login = () => {
       setLogedUser(respData?.data?.user);
 
       localStorage.setItem("token", JSON.stringify(respData?.data));
+      if(respData?.data?.tradesmanProfile !== null){
+        localStorage.setItem("tradesmanID", JSON.stringify(respData?.data?.tradesmanProfile?._id));
+      }
       // setLogedUser(JSON.parse(localStorage.getItem("token")));
       navigate("/");
     }
