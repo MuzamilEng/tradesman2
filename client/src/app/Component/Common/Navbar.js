@@ -9,6 +9,7 @@ const Navbar = () => {
   const { isLogedUser, setLogedUser } = useGlobalContext();
   function logoutUser() {
     localStorage.removeItem("token");
+    localStorage.removeItem("tradesmanID")
     setLogedUser(false);
     nevigate("/login");
   }

@@ -46,6 +46,7 @@ function SideDrawer() {
   const logoutHandler = () => {
     localStorage.removeItem("userLoginInfo");
     localStorage.removeItem("token");
+    localStorage.removeItem("tradesmanID")
     navigate("/");
   };
 
