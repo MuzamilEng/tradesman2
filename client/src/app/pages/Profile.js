@@ -17,7 +17,7 @@ const Profile = () => {
   const { id } = useParams();
   const { data: profileData, isLoading } = useGetTrademanByIdQuery(id);
   const { tradesManProfile, setTradesManProfile } = useGlobalContext();
-  const loggedUserId = JSON.parse(localStorage.getItem("token"));
+  const loggedUserId = localStorage.getItem("token") || JSON.parse(localStorage.getItem("token"));
   const [searchedLocation, setSearchedLocation] = useState(null);
   const navigate = useNavigate();
   const [addTradesman] = useAddTradesmanMutation();

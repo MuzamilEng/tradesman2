@@ -26,7 +26,7 @@ function SideDrawer() {
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
 
-  const loginTokken  = JSON.parse(localStorage.getItem('token'));
+  const loginTokken  = localStorage.getItem('token') || JSON.parse(localStorage.getItem('token'));
   const userToken = loginTokken?.token
   // console.log(userToken, 'tokken1234567890');
   const {

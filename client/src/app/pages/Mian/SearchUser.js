@@ -22,7 +22,7 @@ const SearchUser = () => {
     }
   };
   useEffect(() => {
-    let searchQuery = localStorage.getItem("searchTradesmanQuery");
+    let searchQuery = localStorage.getItem('searchTradesmanQuery') || localStorage.getItem("searchTradesmanQuery");
 
     fetchData(searchQuery);
   }, []);

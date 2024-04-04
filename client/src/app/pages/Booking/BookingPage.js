@@ -11,7 +11,7 @@ const BookingPage = () => {
   const { id } = useParams();
   const { data } = useGetTrademanByIdQuery(id);
   const navigate = useNavigate();
-  const loginTokken  = JSON.parse(localStorage.getItem('token'));
+  const loginTokken  = localStorage.getItem('token') || JSON.parse(localStorage.getItem('token'));
   const userToken = loginTokken?.token
   const loggedUserId = loginTokken?.user?._id
   const accessChat = async (userId) => {
