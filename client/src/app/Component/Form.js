@@ -13,7 +13,7 @@ const Form = () => {
   async function onSubmit(e) {
     e.preventDefault();
     const queryString = new URLSearchParams(formData).toString();
-    localStorage.setItem("searchTradesmanQuery", queryString);
+    localStorage.setItem("searchTradesmanQuery", JSON.stringify(queryString));
     nevi("/searchUser");
   }
   return (

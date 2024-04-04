@@ -14,11 +14,12 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Profile = () => {
-  const { id } = useParams();
-  const { data: profileData, isLoading } = useGetTrademanByIdQuery(id);
-  const { tradesManProfile, setTradesManProfile } = useGlobalContext();
+  const tradesManId = localStorage.getItem("tradesmanID");
+  const id = JSON.parse(tradesManId);
   const loggedUserID = localStorage.getItem("token");
   const loggedUserId = JSON.parse(loggedUserID);
+  const { data: profileData, isLoading } = useGetTrademanByIdQuery(id);
+  const { tradesManProfile, setTradesManProfile } = useGlobalContext();
   const [searchedLocation, setSearchedLocation] = useState(null);
   const navigate = useNavigate();
   const [addTradesman] = useAddTradesmanMutation();
@@ -104,6 +105,7 @@ const Profile = () => {
           });
           setTimeout(() => {
             navigate(`/profile/${result.data._id}`);
+            const tradesmanID = localStorage.setItem("tradesmanID", JSON.stringify(result.data._id));
           }, 3000);
         } else {
           const result = await addTradesman(formData);
@@ -115,7 +117,7 @@ const Profile = () => {
           });
           setTimeout(() => {
             navigate(`/profile/${result.data._id}`);
-            console.log(result.data._id);
+            const tradesmanID = localStorage.setItem("tradesmanID", JSON.stringify(result.data._id));
           }, 3000);
         }
       } catch (error) {
