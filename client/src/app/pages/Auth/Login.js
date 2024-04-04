@@ -58,7 +58,8 @@ const Login = () => {
 
     if (validateForm()) {
       const respData = await loginUser(formData);
-      console.log("respData", respData?.data);
+      // console.log("respData", respData?.data);
+      setLogedUser(respData?.data?.user);
 
       localStorage.setItem("token", JSON.stringify(respData?.data));
       // setLogedUser(JSON.parse(localStorage.getItem("token")));

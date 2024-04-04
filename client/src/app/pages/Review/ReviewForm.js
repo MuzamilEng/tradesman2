@@ -127,8 +127,8 @@ const ReviewForm = () => {
         console.log(entry[0], entry[1]);
       }
       try {
-        const token = localStorage.getItem("token") || JSON.parse(localStorage.getItem("token"));
-        console.log("hello", token.token);
+        const tokken = localStorage.getItem("token");
+        const token = JSON.parse(tokken);
         const response = await fetch(
           `${process.env.REACT_APP_API_URL}/review/add-review/${id}`,
           {

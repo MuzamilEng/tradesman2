@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { useGlobalContext } from '../../UserContext/UserContext';
 
 
 const ProfileCard = ({ location,}) => {
-  const userDetails = localStorage.getItem('token') || JSON.parse(localStorage.getItem('token'));
+  const userDetails = localStorage.getItem('token');
+  const user = JSON.parse(userDetails);
   const [showuserInitialDetails, setShowuserInitialDetails] = useState(null)
   const member = showuserInitialDetails?.user?.updatedAt;
 const formatDate = (dateString) => {
@@ -12,8 +14,8 @@ const formatDate = (dateString) => {
 };
 
   useEffect(()=> {
-    if (userDetails && userDetails !== undefined){
-      setShowuserInitialDetails(userDetails)
+    if (user && user !== undefined){
+      setShowuserInitialDetails(user)
     }
   }, [])
   return (

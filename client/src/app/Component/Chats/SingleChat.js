@@ -37,7 +37,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
   const { selectedChat, setSelectedChat, user, notification, setNotification } =
     useGlobalContext();
-  const loginTokken = localStorage.getItem('token') || JSON.parse(localStorage.getItem("token"));
+  const loginToken = localStorage.getItem('token');
+  const loginTokken = JSON.parse(loginToken);
   const userToken = loginTokken?.token; // console.log(loginTokken, 'tokken');
 
   const fetchMessages = async () => {

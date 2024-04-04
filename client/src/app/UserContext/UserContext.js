@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
     tradeType: "", location: "", phoneNumber: null, description: "",
     hourlyRate: 0,image:"", gigImage1:'', gigImage2:'', gigImage3:''
   })
-const [isLogedUser,setLogedUser] = useState()
+const [isLogedUser,setLogedUser] = useState(null)
   // ----------------------------------------------------------------
   const [selectedChat, setSelectedChat] = useState();
   const [user, setUser] = useState();
@@ -22,7 +22,8 @@ const [isLogedUser,setLogedUser] = useState()
   const [query,setQuery] = useState({});
   const navigate = useNavigate();
 
-  const userLoginInfo = localStorage.getItem("token") || JSON.parse(localStorage.getItem("token"))
+  const userLoginInFo = localStorage.getItem("token");
+  const userLoginInfo = JSON.parse(userLoginInFo);
   useEffect(() => {
     if(userLoginInfo && userLoginInfo?.user !== undefined) {
       setLogedUser(userLoginInfo)

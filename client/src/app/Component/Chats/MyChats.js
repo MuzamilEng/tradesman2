@@ -8,7 +8,8 @@ import { useGlobalContext } from "../../UserContext/UserContext";
 
 const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
-  const loginTokken = localStorage.getItem('token') || JSON.parse(localStorage.getItem("token"));
+  const loginToken = localStorage.getItem('token');
+  const loginTokken = JSON.parse(loginToken);
   // console.log("chat token", loginTokken.token);
   const userToken = loginTokken?.token;
 
